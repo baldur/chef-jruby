@@ -26,7 +26,7 @@ prefix =  node[:jruby][:install_path]
 file "/etc/profile.d/jruby.sh" do
   mode "0644"
   content "PATH=\$PATH:" + File.join(prefix, "bin")
-  action :nothing
+  action :create_if_missing
 end
 
 # install jruby
@@ -38,7 +38,6 @@ install_from_release('jruby') do
   checksum node[:jruby][:checksum]
   has_binaries  %w(bin/jgem bin/jruby bin/jirb)
   not_if       { File.exists?(prefix) }
-  notifies :create_if_missing, "file[/etc/profile.d/jruby.sh]"
 end
 
 if node[:jruby][:nailgun]
