@@ -23,6 +23,14 @@ version = node[:jruby][:version]
 
 prefix =  node[:jruby][:install_path]
 
+jruby_version = node[:jruby][:ruby_version]
+
+file "/etc/profile.d/jruby_ruby_version.sh" do
+  mode "0644"
+  content "export JRUBY_OPTS=--#{jruby_version}"
+  action :create_if_missing
+end
+
 file "/etc/profile.d/jruby.sh" do
   mode "0644"
   content "PATH=\$PATH:" + File.join(prefix, "bin")
